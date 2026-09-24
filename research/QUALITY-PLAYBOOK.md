@@ -204,6 +204,21 @@ The technique numbers in each row point to the detailed write-ups in the linked 
 | 35 | Gaussian-splat scan of the rigid mailer for exact-angle start frames | F2 F9 | B/C | 0 | 07 #7 |
 | 36 | FASHN VTON 1.5 (the only commercially licensed open try-on) for garment keyframes | F2 F5 | B | ~$1 GPU | 05 #17 |
 
+**Added from the podcast/YouTube research (`08`)**, mostly from Higgsfield's official YouTube episodes:
+
+| Rank | Technique | Fixes | Ev. | Cost | Where |
+|---|---|---|---|---|---|
+| 37 | **Phone rehearsal → LLM writes the prompt second by second from the clip.** "Greybox = timing and path. References = identity and set. Mixing those jobs in one text prompt is how seats swap and hands melt." Store movement-library clips at the final shot length. | F3 F4 F7 F9 | B | 0 + 1 video | 08 #9 |
+| 38 | **Blur small print in the product references** (care labels, size tags, tiny woven text): "short text survives, long text dies". Add a per-SKU `must_survive_marks[]` list checked on every take. | F2 | B | 0 | 08 #6 |
+| 39 | **State changes behind something that hides the body, in timed windows** (official jersey ad: one reference image per look plus a second window, e.g. 0–3 s / 4–6.5 s / 7.5–13 s; change only while something covers the body, such as a hand over the lens, a door frame or a whip-pan; "a visible morph is a failed take") | F4 | B | 1 video | 08 #7 |
+| 40 | **Paste the real face and real product into sheets** instead of letting the model redraw them (official love-story episode, 500M views) | F1 F2 | B | 0 + 1 video | 08 #12 |
+| 41 | **Scale reference photo**: a real photo of a hand holding the folded tee or mailer at true size, tagged as the scale reference; fix hands on start frames in Photoshop | F3 | B | 0 | 08 #11 |
+| 42 | **Face pack for Seedance: ≤3 stills, same session, same expression** ("expression variety → the model averages a midpoint face") | F1 | B | 0 | 08 #19 |
+| 43 | **Finish:** trim or grade Seedance's over-exposed first frames; grain 2% (3% in dark scenes); 30 fps; retime **with the audio detached** (or it pitches up); optionally a second lossy pass (messenger recompression) | F6 | B/C | 0 | 08 #16–17 |
+| 44 | **Hybrid real talking track + AI b-roll**: a real person's 15–30 s talk, cut every 4–6 s into AI try-on and product b-roll. Dara Denney says AI *voice-overs* pass as real but full AI avatars "still get punished". | F1 F6 F8 | B/C | 0 + b-roll | 08 #24 |
+| 45 | **Use the video model as a turnaround generator**: a slow orbit of the model wearing the SKU, with frames extracted as matching multi-angle stills | F1 F2 | B/C | ~3.5 | 08 #23 |
+| 46 | **Route handheld walk-and-talk to Kling** (Seedance's handheld looks "like a phone gimbal trying too hard"; Kling's has weightier micro-jitter); big physical actions to Seedance | F6 | C | bake-off | 08 #17 #21 |
+
 ---
 
 ## 3. Failure → fix map (what fixes each problem we keep hitting)
@@ -355,4 +370,6 @@ This is the list of ways to find new ideas you asked for, ranked by signal per h
 - No independent evidence on leggings or denim physics beyond "use real on-body references"; needs a squat/lunge test per model.
 - Costs of Genjutsu, Ad Multiplier, Marketing Studio, gpt_image_2 boards and Seedream de-slop aren't exposed by `models_explore`. Use `get_cost`.
 - The Higgsfield Academy lessons and Genjutsu cost guide couldn't be fetched from this session.
-- Full YouTube and podcast transcripts: run the harvester locally (steps in chat); `08-podcasts-youtube.md` has the summary-level findings and the URL list.
+- Full YouTube and podcast transcripts: run the harvester locally (steps in chat); `08-podcasts-youtube.md` has the summary-level findings. `research/harvest-urls.txt` lists 64 of the most useful videos and episodes; run `python3 research/tools/harvest_transcripts.py --list research/harvest-urls.txt --max-priority 1` first.
+- Two podcasts need a human to watch them: the fal Podcast with Tim Simmons (`deQNOjnDcwY`) and AI For Humans (`EA3PGSRotwc`).
+- Higgsfield's Blender plugin mentions an "Anti-Slop" mode for Seedance 2.5; what it does is unknown.
