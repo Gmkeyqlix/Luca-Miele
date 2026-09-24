@@ -23,9 +23,14 @@ Already downloaded videos are skipped, so it is safe to re-run.
 import argparse
 import re
 import sys
+import time
+import warnings
 from pathlib import Path
 
+warnings.filterwarnings("ignore")  # urllib3/LibreSSL + python 3.9 deprecation noise
+
 OUT_DIR = Path(__file__).resolve().parent.parent / "transcripts"
+SEARCH_META = {}
 ID_RE = re.compile(r"(?:v=|youtu\.be/|shorts/|live/|embed/)([A-Za-z0-9_-]{11})")
 
 
@@ -51,21 +56,24 @@ def read_list(path, max_priority):
 def search(query, n):
     import yt_dlp
 
-    opts = {"quiet": True, "extract_flat": True, "skip_download": True}
+    opts = {"quiet": True, "no_warnings": True, "extract_flat": True, "skip_download": True}
     with yt_dlp.YoutubeDL(opts) as ydl:
         res = ydl.extract_info(f"ytsearch{n}:{query}", download=False)
+    # search results already carry title/channel/duration, so no extra metadata request is needed
+    for e in res.get("entries", []):
+        if e.get("id"):
+            SEARCH_META[e["id"]] = e
     return [f"https://www.youtube.com/watch?v={e['id']}" for e in res.get("entries", []) if e.get("id")]
 
 
 def metadata(url):
     import yt_dlp
 
-    opts = {"quiet": True, "skip_download": True}
+    opts = {"quiet": True, "no_warnings": True, "skip_download": True}
     try:
         with yt_dlp.YoutubeDL(opts) as ydl:
             return ydl.extract_info(url, download=False) or {}
-    except Exception as e:  # metadata is nice-to-have; transcript is what matters
-        print(f"  metadata failed: {e}", file=sys.stderr)
+    except Exception:  # metadata is nice-to-have; transcript is what matters
         return {}
 
 
@@ -129,6 +137,7 @@ def main():
     ap.add_argument("--max-priority", type=int, default=3)
     ap.add_argument("--search", action="append", default=[], help="YouTube search query (repeatable)")
     ap.add_argument("--per-query", type=int, default=10)
+    ap.add_argument("--sleep", type=float, default=4.0, help="seconds between videos (avoids YouTube IP blocks)")
     ap.add_argument("urls", nargs="*")
     args = ap.parse_args()
 
@@ -139,7 +148,7 @@ def main():
         urls += search(q, args.per_query)
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    done = failed = skipped = 0
+    done = failed = skipped = blocked = 0
     seen = set()
     for url in urls:
         vid = video_id(url)
@@ -151,15 +160,26 @@ def main():
             skipped += 1
             continue
         print(f"-> {url}")
+        time.sleep(args.sleep)
         try:
             segs = transcript(vid)
         except Exception as e:
-            print(f"  no transcript: {e.__class__.__name__}", file=sys.stderr)
+            name = e.__class__.__name__
+            print(f"  no transcript: {name}", file=sys.stderr)
             failed += 1
+            if name in ("IpBlocked", "RequestBlocked", "TooManyRequests"):
+                blocked += 1
+                if blocked >= 3:
+                    print("\nYouTube is blocking this connection. Wait a few hours (or switch network, e.g. phone"
+                          " hotspot) and run the same command again; saved videos are skipped.")
+                    break
             continue
+        blocked = 0
         watch = f"https://www.youtube.com/watch?v={vid}"
-        out.write_text(to_markdown(watch, metadata(watch), segs))
+        meta = SEARCH_META.get(vid) or metadata(watch)
+        out.write_text(to_markdown(watch, meta, segs))
         done += 1
+        print(f"  saved ({done})")
     print(f"\nsaved {done}, skipped {skipped} existing, failed {failed} -> {OUT_DIR}")
 
 
