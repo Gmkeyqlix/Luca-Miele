@@ -373,3 +373,70 @@ This is the list of ways to find new ideas you asked for, ranked by signal per h
 - Full YouTube and podcast transcripts: run the harvester locally (steps in chat); `08-podcasts-youtube.md` has the summary-level findings. `research/harvest-urls.txt` lists 64 of the most useful videos and episodes; run `python3 research/tools/harvest_transcripts.py --list research/harvest-urls.txt --max-priority 1` first.
 - Two podcasts need a human to watch them: the fal Podcast with Tim Simmons (`deQNOjnDcwY`) and AI For Humans (`EA3PGSRotwc`).
 - Higgsfield's Blender plugin mentions an "Anti-Slop" mode for Seedance 2.5; what it does is unknown.
+
+---
+
+## 12. Round 2: what 27 full YouTube transcripts added (`09a`, `09b`, `09c`)
+
+These are 27 transcripts downloaded with the harvester and read in full. The best sources were `M73BrFnVPA8` (a Higgsfield power user), `eflfUwTdSEc` (Seedance 2.5 long takes), `lkL8mlpVScY` (a Seedance creator whose clip fooled a friend), `Xcg8aklWBGM` (OpenArt Seedance 2.5 UGC) and `b_RghITuQQM` (Kling 3.0 limits). Most of the others were UI tours or sponsored. Everything here is grade B/C (single creators); timestamps are in the 09 files.
+
+### 12.1 Upgrades to the top 7
+
+- **#1 one-call board → also attach a still per cut.** Make cut 1's still the start frame, and send the character sheet, room and **the other cuts' stills** as references. With only the sheet and room, "framing drifts long before your character does" (`M73BrFnVPA8 @07:56`). This settles contradiction §8.3: use the board *and* per-cut stills. Keep to 4–8 cuts per 15 s; 7 or more starts to over-compress.
+- **#4 linter → new hard limits:**
+  - **Prompt caps are silent.** Seedance truncates at **~2,500 characters** and Kling multi-shot at **~500 per shot** (`tfs8U3CbAOs @07:34`, `k6jn5xjqYSo @07:44`). Long lock/negative blocks at the end may never reach the model. That's one more reason the realism and lock text goes at the **start**.
+  - **Upload order must match the @Image numbering**, or roles swap and the room gets treated as a character (`kC12eMs0SF0 @08:07`).
+  - **Kling dialogue:** speech first, action last. Lip-sync drifts in the last ~5 s of a 15 s clip, with a hard ceiling around 10 s (`z84WQAn6U0I @03:06`, `b_RghITuQQM @22:41`). Kling multi-shot allows ≤6 shots, ≥3 s each, one action + one camera move per shot, and no multi-shot when both start and end frames are set.
+  - **Never name camera gear in the visual prompt.** "FPV drone" puts a drone in frame, and a fixed pose gives "a mannequin" (`M73BrFnVPA8 @09:36`). Describe the vantage point and ongoing activity, not "phone/tripod/selfie stick". This matches Higgsfield's own ban on "phone in her hand".
+  - **Explain why there's one camera.** Seedance invents extra angles unless told "one continuous shot because I'm holding the camera" (`lkL8mlpVScY @18:52`).
+- **#3 stills → three new rules:**
+  - **Add a relight line** to every composite/keyframe, written from the room's light source. Otherwise the flat-lit sheet "looks edited" (`M73BrFnVPA8 @03:37`).
+  - **Make the "after" state by editing the "before" image** (the torn mailer from the sealed-mailer still, the worn hoodie from the pre-wear still) and attach both. Generated separately "they just come out as two different rooms" (`eflfUwTdSEc @13:04`).
+  - **Build the end frame from the approved start frame**, with "match exactly" as the first line.
+- **#5 person kit → real close photos beat sheet-only personas.** Include a side or back view and reject distant photos, because the model invents skin and moles. Build the sheet *from* real close photos and send the real photo alongside it (`lkL8mlpVScY @20:55–23:29`). Train Soul ID on flat, boring angles, since it learns dramatic lighting (`M73BrFnVPA8 @14:48`). Strip small accessories from sheets.
+
+### 12.2 New techniques
+
+| # | Technique | Fixes | Source |
+|---|---|---|---|
+| 47 | **Write a state change as fixed states:** "fully covered by X / changed the instant X comes away / changed from then on", plus "the only torn thing is…". For the mailer: "sealed while in her lap / open the instant her hands lift away / open from then on". | F4 | `eflfUwTdSEc @12:02` |
+| 48 | **Anti-easing line whenever an end frame is locked:** "already at full speed in the first shot… no deceleration… still going as the last one ends". Otherwise the subject slows and "poses" at the end. | F6 F4 | `M73BrFnVPA8 @12:44` |
+| 49 | **"Casual multi-camera TV shoot… fixed tripod angles joined by hard cuts, no zooms"** got Seedance to auto-cut 7 consistent angles from one prompt with no board, and tripod framing frees both hands. It's a cheaper board-free route worth A/B testing against #1. | F1 F3 F7 F9 | `eflfUwTdSEc @09:11` |
+| 50 | **Start/end frames must be physically reachable:** every object needs a real path, on the same plane and in the same positions, or it melts through things. 5 s beats 10 s for the same pair. | F4 F7 | `aw6N7M4fPuo @02:33` |
+| 51 | **Render +2 s longer than the script, then trim**, so the last action and line aren't cut off. Pad the whole clip, never a single action. | F8 F9 | `Xcg8aklWBGM @06:13`, `kC12eMs0SF0 @09:41` |
+| 52 | **Scripted personal habit + written pause** ("looks off frame slightly, which is a thing I often do") in a 7 s single take. This was the clip that fooled a real person. | F6 F8 | `lkL8mlpVScY @21–23` |
+| 53 | **Declare invariants once; only the touched object moves.** Write a camera reveal as an ordered list of what enters the frame. | F7 | `09b` F-4, F-5 |
+| 54 | **Counted foley tied to contact events** ("two rustles as the hoodie lands on the bed"), with in-scene and added sound kept separate. | F8 | `09b` F-12 |
+| 55 | **Audio-first gate:** approve the voice track before any video spend. | F8 F9 | `09c` C-18 |
+| 56 | **"Action mapping" (Kling):** cover one physical action from 4–5 angles in one multi-shot, re-run with identical inputs, and splice the best bits. Use Kling multi-shot to *find* shots and single shots for keepers ("one great shot out of five"). | F9 | `Z3vY2U8ysL0 @05:47`, `BJ9H0Dq72lY @11:04` |
+| 57 | **Colourway swap from one edited frame:** make one hoodie-colour variant by editing a single frame, then carry it through. | F2 F9 | `09b` F-16 |
+| 58 | **Check Higgsfield reference eligibility before planning.** Some references fail the Seedance gate, and building a shot around them wastes credits. | F9 | `ez8gfygg8ho @04:07` |
+| 59 | **Bring the persona in through the Higgsfield MCP as an uploaded Marketing Studio avatar**, not a Soul character called by name. Reported as more stable. | F1 | `wc4VOgT7S58 @01:33` |
+| 60 | **Hands-only first-person POV:** face banned, "slow steady glide" rather than bare "handheld", which over-shakes. | F3 F6 | `eflfUwTdSEc @03:26` |
+
+### 12.3 Cost data (it replaces the "~18 credits" assumption)
+- **Seedance standard on Higgsfield ≈ 6 credits per second** (66 credits for 11 s) (`tfs8U3CbAOs @05:58`). **Seedance Fast is half the price at the same 720p**, so use it for iteration (`@03:48`). Community run: ~67 credits for 15 s at 720p with audio.
+- **Seedance 2.5, 8 s at 480p ≈ 20 credits:** use it as a motion "proof render" before paying for a final (`M73BrFnVPA8 @16:51`).
+- The same 5 s shot costs **15 vs 110 credits** depending only on resolution and audio (`M73BrFnVPA8 @16:21`).
+- So the realistic budget for a finished 15 s ad is: a 480p/Fast proof (~20–45 credits) + one 720p final (~90 credits) + stills (~10–20 credits).
+
+### 12.4 Contradictions resolved
+| Topic | Creators say | Keep for SANTO UGC |
+|---|---|---|
+| Style block at the bottom (`kC12`) | Put it at the end | **Start.** Seedance reads the start, and the end is what gets truncated |
+| Upscale / 1080p / 4K (several) | Upscale later | **720p, no generative upscale.** An open test: 480p + ByteDance "AIGC" upscale vs native 720p in the blind test |
+| Music (`kC12`, `goZDcGw`) | Add background music | **No music by default** (film context vs UGC) |
+| Shallow DoF, film grain, 35 mm f/1.8 (`k6jn`, `Zo8K`, `M73B`) | Realism | **Banned for phone UGC.** Keep only their method: ban unwanted qualities by name |
+| LLM re-describes the approved still (`o-xhRksFBAc`) | "Bring the image to life" | **Describe motion and sound only** |
+| Showing a state change on camera (`eflfUwTdSEc`) | Works as a long take | **Only behind something that hides it**, with fixed-state wording (#47) + before/after plates. Test on the mailer |
+| Kling multi-shot one-call | Consistent from one reference | Cheaper alternative route; add it to the T10 bake-off |
+| Sheet model (GPT Image 2 vs Seedream 5 Pro) | Split | 2-image A/B on the SANTO persona |
+
+### 12.5 Added to STOP DOING
+21. Locking an end frame without the anti-easing line.
+22. Naming camera gear in the visual prompt.
+23. Scripting dialogue to the exact render length (pad +2 s).
+24. Trusting Kling's "no dialogue" or "no music" negatives. Turn audio off.
+25. Prompts over ~2,500 characters (Seedance) or ~500 per shot (Kling). Text past the limit is silently lost.
+26. Training Soul ID on dramatic or rim-lit photos.
+27. Following "golden hour / warm cinematic" Veo recipes from tutorials for UGC.
