@@ -1,0 +1,128 @@
+{
+ "model": "seedance_2_5",
+ "mode": "board",
+ "duration": 15,
+ "prompt": "UGC iPhone front-camera video filmed by her in a real rented bedroom, visible skin pores, faint sensor noise, deep focus, flat ungraded phone look, one window light from frame-left, real-time speed, never slow motion. @Image1 is the storyboard: cut order and rough framing only, do not copy its panel borders. <Maya> corresponds to @Image2. Use only her face, hair and build. <SANTO hoodie> corresponds to @Image3 and @Image4. All these images define one single hoodie; the output must contain only one. Use only its structure, heavyweight grey fleece, chest print and ribbed cuffs, keep the logo and print exactly as in the reference. <Mailer> corresponds to @Image5, sealed grey SANTO poly mailer, it stays sealed. <Bedroom> references @Image6. Use only the layout and window light. Do not use any people in it. Cut 1 (0-1.9s) MID SELFIE: already mid-motion, Maya in a plain grey tee sits on the bed edge, the sealed mailer rests on the duvet beside her, her free hand taps it once. She says: \"Been waiting on this drop for actual months.\" Hard cut to. Cut 2 (1.9-4.2s) WIDE STATIC: one continuous view from across the room, she already wears the hoodie, weight shifts to one hip, one slow twirl, fabric swings then settles. Hard cut to. Cut 3 (4.2-6.1s) MID STATIC: both hands smooth the front hem. She says: \"heavier than the photos, sits right at my hips.\" Hard cut to. Cut 4 (6.1-7.5s) TIGHT STATIC-CLOSE: fleece texture on the chest catches window light as she breathes, her hands rest at her sides, mouth closed, voice-over: \"brushed inside, feels like a blanket.\" Hard cut to. Cut 5 (7.5-9.4s) WIDE STATIC: mid-turn, glance over the shoulder, the back print reads. Hard cut to. Cut 6 (9.4-10.8s) TIGHT STATIC-CLOSE: ribbed cuff at her relaxed wrist, voice-over: \"cuffs don't go baggy.\" Hard cut to. Cut 7 (10.8-13.1s) MID STATIC: she leans on the doorframe, keys-free, small laugh. Hard cut to. Cut 8 (13.1-15s) MID SELFIE: back at arm's length, she says: \"not taking this off till\" and the clip ends mid-phrase. Audio: iPhone microphone with natural room tone, fleece rustle on the twirl. No background music. No subtitles. Only two hands, both hers. Keep the rest of the room unchanged.",
+ "refs": [
+  {
+   "tag": "@Image1",
+   "role": "cut",
+   "use": "storyboard order",
+   "exclude": "panel borders"
+  },
+  {
+   "tag": "@Image2",
+   "role": "identity",
+   "use": "face, hair, build",
+   "exclude": "background, pose",
+   "contains_product": false
+  },
+  {
+   "tag": "@Image3",
+   "role": "product",
+   "use": "front"
+  },
+  {
+   "tag": "@Image4",
+   "role": "product",
+   "use": "back print"
+  },
+  {
+   "tag": "@Image5",
+   "role": "state",
+   "use": "sealed mailer"
+  },
+  {
+   "tag": "@Image6",
+   "role": "room",
+   "use": "layout, light",
+   "exclude": "people"
+  }
+ ],
+ "shots": [
+  {
+   "seconds": 1.9,
+   "pov": "SELFIE",
+   "distance": "MID",
+   "camera_holder": "selfie",
+   "beat": "SPEAK",
+   "left_hand": "phone",
+   "right_hand": "parked",
+   "dialogue": "Been waiting on this drop for actual months.",
+   "action": "taps the sealed mailer once, then rests",
+   "props": {
+    "mailer": [
+     "sealed",
+     "sealed"
+    ]
+   }
+  },
+  {
+   "seconds": 2.3,
+   "pov": "STATIC",
+   "distance": "WIDE",
+   "camera_holder": "propped",
+   "beat": "DO",
+   "action": "weight shift, one slow twirl"
+  },
+  {
+   "seconds": 1.9,
+   "pov": "STATIC",
+   "distance": "MID",
+   "camera_holder": "propped",
+   "beat": "DO",
+   "left_hand": "smooths hem",
+   "right_hand": "smooths hem",
+   "dialogue": "heavier than the photos, sits right at my hips.",
+   "lipsync": false,
+   "action": "both hands smooth the front hem"
+  },
+  {
+   "seconds": 1.4,
+   "pov": "STATIC-CLOSE",
+   "distance": "TIGHT",
+   "camera_holder": "propped",
+   "beat": "DO",
+   "dialogue": "brushed inside, feels like a blanket.",
+   "lipsync": false,
+   "action": "fleece catches light as she breathes"
+  },
+  {
+   "seconds": 1.9,
+   "pov": "STATIC",
+   "distance": "WIDE",
+   "camera_holder": "propped",
+   "beat": "DO",
+   "action": "mid-turn, glance over the shoulder"
+  },
+  {
+   "seconds": 1.4,
+   "pov": "STATIC-CLOSE",
+   "distance": "TIGHT",
+   "camera_holder": "propped",
+   "beat": "DO",
+   "dialogue": "cuffs don't go baggy.",
+   "lipsync": false,
+   "action": "cuff at relaxed wrist"
+  },
+  {
+   "seconds": 2.3,
+   "pov": "STATIC",
+   "distance": "MID",
+   "camera_holder": "propped",
+   "beat": "DO",
+   "action": "leans on doorframe, small laugh"
+  },
+  {
+   "seconds": 1.9,
+   "pov": "SELFIE",
+   "distance": "MID",
+   "camera_holder": "selfie",
+   "beat": "SPEAK",
+   "left_hand": "phone",
+   "right_hand": "parked",
+   "dialogue": "not taking this off till",
+   "action": "close to lens, ends mid-phrase"
+  }
+ ]
+}

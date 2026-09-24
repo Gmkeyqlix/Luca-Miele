@@ -440,3 +440,14 @@ These are 27 transcripts downloaded with the harvester and read in full. The bes
 25. Prompts over ~2,500 characters (Seedance) or ~500 per shot (Kling). Text past the limit is silently lost.
 26. Training Soul ID on dramatic or rim-lit photos.
 27. Following "golden hour / warm cinematic" Veo recipes from tutorials for UGC.
+
+---
+
+## 13. Tools built from this playbook (free, in `research/tools/`)
+- **`prompt_linter.py`**: the §1 #4 rules as code. Run it before any paid call; exit code 1 = don't spend. `examples/good_fitcheck.json` is a ready 15 s SANTO fit-check (8 cuts, 32 words, 2,183 characters) that passes. `bad_fitcheck.json` shows 15 caught errors.
+- **`phone_finish.py`**: §1 #7 + §12.3 as one command (trim head/tail, pitch-safe retime, handheld drift, phone sharpening, sensor noise, 30 fps, phone-mic audio chain, real room tone and room reverb, optional messenger pass).
+- **`qa_frames.py`**: the free parts of #30 (contact sheet, cut count vs plan, duplicate/frozen frames, hot first frames, dead air, and the human checklist). Run it on raw generations.
+- **`harvest_transcripts.py`** + `research/harvest-urls.txt`: YouTube knowledge mining.
+- See `research/tools/README.md`. Next research round (Mac-only sources): `research/ROUND3-LOCAL-BRIEF.md`.
+
+**Tension to watch:** Higgsfield's own recipes write dense per-cut prompts ("4–10 sentences per cut"), but Seedance silently cuts off anything after ~2,500 characters. The linter's example fits 8 cuts in 2,183 characters by keeping each cut to one or two sentences and putting realism and locks first. If Higgsfield's MCP route turns out to accept longer prompts, raise the cap in `PROMPT_CAPS`.
