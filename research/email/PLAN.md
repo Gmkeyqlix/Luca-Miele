@@ -1,5 +1,22 @@
 # SANTO email plan: "Your £10" payday weekend (Fri 25 – Sun 27 Sep 2026)
 
+## LIVE STATUS (created 25 Sep 2026, 22:45 UK): everything is built, nothing is sent
+
+| What | Where | Status |
+|---|---|---|
+| Discount **PAYDAY10**: £10 off, no minimum, once per customer, ends **Sun 27 Sep 23:59 BST** (can stack with free delivery, not with other money-off codes) | Shopify → Discounts (`gid://shopify/DiscountCodeNode/1796564386049`) | **Active now** |
+| Segment **Real engaged (click 60d / order 120d / new 15d)**: **5,099 profiles** | Klaviyo `V85MZ5` | Live |
+| Segment **PAYDAY10 · opened/clicked since Sat send, no order** (fills after email 1 sends) | Klaviyo `VKdABa` | Live |
+| Campaign **1: Sat 26 Sep 11:00 BST, "Your £10"**. Subject: "{name}, £10 off anything. Ends Sunday." Excludes the cold and bounced DIAG segments | Klaviyo `01M3D8J8DVJQEKMFCGPK1XP6VG` | **Draft, send time pre-filled** |
+| Campaign **3: Sun 27 Sep 18:00 BST, "Your £10 ends tonight"**, to openers and clickers with no order | Klaviyo `01M3D8JGK4W6TTN6H159DSAN8S` | **Draft, send time pre-filled** |
+| Campaign **2 (optional), "What your £10 gets you"** | Klaviyo `01M3D8JNAKDA1YHH8Z505MZQ66` | Draft, no time set. Only use it if you want a third email |
+
+**Changes from the original plan:**
+- **Shared honest code instead of unique codes.** Klaviyo's automatic Shopify unique codes can only be switched on in its web app, and uploading ~14k codes by API wasn't reliable. `PAYDAY10` is shared and once per customer, and the copy no longer claims the code is "yours alone". To switch to unique codes later: Klaviyo → Coupons → Create → Shopify, then replace `PAYDAY10` in the templates with `{% coupon_code 'NAME' %}`.
+- **Timing.** The Friday 18:00 slot passed while things were being built, so email 1 moves to Saturday 11:00 ("payday weekend"). The deadline stays Sunday 23:59. Email 2 is optional, to protect unsubscribes.
+
+**To go live:** open each campaign in Klaviyo (`klaviyo.com/campaign/{id}/wizard`), send a test to yourself, click the button in the test and check the £10 comes off at checkout, then press **Schedule**.
+
 ## Why this, from your own data
 - Last 12 months: 47 campaigns, ~1.1M sends, **£7,045 attributed revenue**. The typical campaign gets **0.3% clicks** (the fashion average is 1–1.5%) and **0.4–1.1% unsubscribes** (the norm is ~0.2%).
 - Three emails beat everything else, and all three felt like **"something of yours is waiting"**:

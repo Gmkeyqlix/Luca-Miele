@@ -2,14 +2,14 @@
 """Build the 3-email "Your £10" payday weekend campaign as Klaviyo-ready HTML.
 
 Honest version of the store-credit mechanic: every recipient gets a real,
-unique, single-use £10 code (Klaviyo coupon tag), a real deadline that is
+£10 code (PAYDAY10, once per customer, no minimum), a real deadline that is
 never extended, and no transactional disguise. Output: research/email/out/*.html
 """
 
 from pathlib import Path
 
 OUT = Path(__file__).parent / "out"
-COUPON = "{% coupon_code 'SANTO10AUTUMN' %}"  # Klaviyo unique-code coupon (create it first, see PLAN)
+COUPON = "PAYDAY10"  # live Shopify discount: £10 off, no minimum, once per customer, ends 27 Sep 22:59 UTC
 DEADLINE = "Sunday 27 September, 23:59"
 NAME = "{{ first_name|default:'' }}"
 HI = "{% if person.first_name %}Hi {{ person.first_name }},{% else %}Hi,{% endif %}"
@@ -43,7 +43,6 @@ def shell(preheader, body):
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark">
 <title>Santo</title>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter+Tight:wght@400;600&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
 <style>
  body{{margin:0;padding:0;background:{PAPER};}}
  .wrap{{max-width:560px;margin:0 auto;padding:28px 22px 36px;font-family:'Inter Tight',Arial,Helvetica,sans-serif;color:{INK};font-size:17px;line-height:1.5;}}
@@ -69,7 +68,7 @@ def shell(preheader, body):
 <div class="wrap">
 <div class="logo">SANTO</div>
 {body}
-<div class="fine">Your £10 code works once, on anything, with no minimum spend. It can't be combined with other codes and ends {DEADLINE} (UK time).<br><br>
+<div class="fine">PAYDAY10 gives £10 off one order per customer, on anything, with no minimum spend. It can't be combined with other money-off codes and ends {DEADLINE} (UK time).<br><br>
 You're getting this because you signed up at santo.clothing. {{% unsubscribe 'Unsubscribe' %}}.<br>{{{{ organization.name }}}} {{{{ organization.full_address }}}}</div>
 </div></body></html>"""
 
@@ -77,13 +76,13 @@ You're getting this because you signed up at santo.clothing. {{% unsubscribe 'Un
 def email1():
     body = f"""
 <p>{HI}</p>
-<p>It's payday and the weather has turned. So here's <strong>£10 off anything</strong> on Santo, from us.</p>
+<p>It's payday weekend and the weather has turned. So here's <strong>£10 off anything</strong> on Santo, from us.</p>
 <div class="code">{COUPON}</div>
-<p>It's yours alone and works once. No minimum spend.<br>It ends <span class="dl">{DEADLINE}</span>. We won't extend it.</p>
+<p>Use it once, on anything. No minimum spend.<br>It ends <span class="dl">{DEADLINE}</span>. We won't extend it.</p>
 <p><a class="btn" href="{code_link()}">Use my £10</a></p>
 <p class="muted">Tap the button and the £10 comes off at checkout automatically.</p>
 <p class="muted">What people are layering up in right now:<br>
-<a href="{link('/products/' + PRODUCTS[0]['handle'])}">{PRODUCTS[0]['title']}</a> · <a href="{link('/products/' + PRODUCTS[1]['handle'])}">{PRODUCTS[1]['title']}</a> · <a href="{link('/collections/all-hoodies')}">All hoodies</a></p>
+<a href="{code_link('/products/' + PRODUCTS[0]['handle'])}">{PRODUCTS[0]['title']}</a> · <a href="{code_link('/products/' + PRODUCTS[1]['handle'])}">{PRODUCTS[1]['title']}</a> · <a href="{code_link('/collections/all-hoodies')}">All hoodies</a></p>
 <p>Santo</p>"""
     return shell("No minimum spend. Your code works until Sunday 23:59.", body)
 
@@ -97,7 +96,7 @@ def email2():
 <div class="price"><span class="was">£{pr['price']:.2f}</span> &nbsp;£{after:.2f} with your code</div></td></tr>"""
     body = f"""
 <h1>What your £10 gets you</h1>
-<p>{HI} your £10 is still there. Here's what it does to the pieces people are buying as the weather turns.</p>
+<p>{HI} your £10 code still works. Here's what it does to the pieces people are buying as the weather turns.</p>
 <table class="prod" role="presentation" width="100%" cellpadding="0" cellspacing="0">{rows}</table>
 <p>Your code: <span class="code" style="font-size:17px;padding:8px 10px;">{COUPON}</span></p>
 <p><a class="btn" href="{code_link('/collections/all-hoodies')}">Shop hoodies with £10 off</a></p>
