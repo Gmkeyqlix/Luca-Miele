@@ -70,7 +70,7 @@ def shell(preheader, body):
 <div class="logo">SANTO</div>
 {body}
 <div class="fine">Your £10 code works once, on anything, with no minimum spend. It can't be combined with other codes and ends {DEADLINE} (UK time).<br><br>
-You're getting this because you signed up at santo.clothing. <a href="{{% unsubscribe_link %}}">Unsubscribe</a>.<br>{{{{ organization.name }}}} {{{{ organization.full_address }}}}</div>
+You're getting this because you signed up at santo.clothing. {{% unsubscribe 'Unsubscribe' %}}.<br>{{{{ organization.name }}}} {{{{ organization.full_address }}}}</div>
 </div></body></html>"""
 
 
