@@ -1,0 +1,15 @@
+Hi {{ person.first_name|default:'' }},
+
+Your £10 ends tonight at 23:59.
+
+PAYDAY10
+
+After that it's gone, and we won't reissue it.
+
+Use it before midnight: https://santo.clothing/discount/PAYDAY10?redirect=/&utm_source=klaviyo&utm_medium=email&utm_campaign=payday10_sep26
+
+Santo
+
+PAYDAY10 gives £10 off one order per customer, on anything, with no minimum spend. It can't be combined with other money-off codes and ends Sunday 27 September, 23:59 (UK time).
+{% unsubscribe 'Unsubscribe' %}
+{{ organization.name }} {{ organization.full_address }}
